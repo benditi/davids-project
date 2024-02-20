@@ -50,7 +50,7 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <View style={styles.mainContainer}>
-      <Text>This is home screen</Text>
+      <Text className="text-xl text-red-500">This is home screen</Text>
       <Button
         onPress={() => {
           navigation.navigate("Profile");

@@ -21,6 +21,12 @@ export default function App() {
   const getMovies = async () => {
     try {
       const response = await fetch("https://reactnative.dev/movies.json");
+      // const response = await fetch(
+      //   "https://cd3a-2a00-a041-e080-7e7c-7c4e-bbf6-19d0-706d.ngrok-free.app/api/attraction"
+      // );
+      // const response = await fetch(
+      //   "https://server-attractions-david-ben-ishais-projects.vercel.app/api/attraction"
+      // );
       const json = await response.json();
       console.log("json", json);
       setData(json.movies);
