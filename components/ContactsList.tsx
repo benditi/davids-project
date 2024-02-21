@@ -33,7 +33,16 @@ export default function ContactsList({ navigation }) {
           const contact = data[0];
           console.log("data.length", data.length);
           console.log("contact", contact);
-          setContacts(data);
+          let sortedContacts = data.sort(function (a, b) {
+            if (a.name < b.name) {
+              return -1;
+            }
+            if (a.name > b.name) {
+              return 1;
+            }
+            return 0;
+          });
+          setContacts(sortedContacts);
         }
       }
     })();
