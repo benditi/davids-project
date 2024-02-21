@@ -28,7 +28,7 @@ export default function ContactsList({ navigation }) {
   }, [filter]);
 
   return (
-    <View className="flex items-center flex-1 pt-5">
+    <View className="flex items-center h-full pt-5">
       <Text className="text-xl text-blue-500 text-center py-5 font-bold">
         Your Contacts:
       </Text>
@@ -39,7 +39,7 @@ export default function ContactsList({ navigation }) {
         defaultValue={filter}
       />
       <FlatList
-        className="w-4/5 pt-5 flex self-center"
+        className="w-4/5 flex self-center"
         data={contacts}
         renderItem={({ item }) => (
           <TouchableHighlight
