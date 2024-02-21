@@ -1,4 +1,4 @@
-import { View, Text, Button, Image } from "react-native";
+import { View, Text, Button, Image, TouchableHighlight } from "react-native";
 import * as Contacts from "expo-contacts";
 import { formatAddress } from "../lib/utils";
 
@@ -21,15 +21,7 @@ export default function ContactDetails({
   console.log("contact.image", contact.image);
 
   return (
-    <View className="py-5 flex items-center px-4">
-      <View className="w-40 pb-5">
-        <Button
-          onPress={() => {
-            navigation.navigate("ContactsList");
-          }}
-          title="Back"
-        ></Button>
-      </View>
+    <View className="py-5 flex items-center px-4 h-full">
       <Text className="text-xl font-bold text-blue-500 text-center">
         {contact.name}
       </Text>
@@ -54,6 +46,16 @@ export default function ContactDetails({
               </Text>
             ))
           : null}
+      </View>
+      <View className="w-40 absolute bottom-10">
+        <TouchableHighlight
+          onPress={() => {
+            navigation.navigate("ContactsList");
+          }}
+          className="bg-blue-500 h-12 rounded-lg flex flex-row items-center justify-center"
+        >
+          <Text className="text-white texl-lg font-semibold">Back</Text>
+        </TouchableHighlight>
       </View>
     </View>
   );
