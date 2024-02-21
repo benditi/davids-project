@@ -11,6 +11,7 @@ import * as Contacts from "expo-contacts";
 export default function ContactsList({ navigation }) {
   let [contacts, setContacts] = useState<Contacts.Contact[]>([]);
   let [filter, setFilter] = useState("");
+
   useEffect(() => {
     (async () => {
       const { status } = await Contacts.requestPermissionsAsync();
@@ -19,7 +20,6 @@ export default function ContactsList({ navigation }) {
           sort: Contacts.SortTypes.FirstName,
           name: filter,
         });
-
         if (data.length > 0) {
           setContacts(data);
         }

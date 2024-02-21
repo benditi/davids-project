@@ -1,4 +1,4 @@
-import { View, Text, Button, Image, TouchableHighlight } from "react-native";
+import { View, Text, Image, TouchableHighlight } from "react-native";
 import * as Contacts from "expo-contacts";
 import { formatAddress } from "../lib/utils";
 import { DataField } from "./DataField";
@@ -16,11 +16,7 @@ export default function ContactDetails({
   navigation,
   route,
 }: ContactDetailsProps) {
-  console.log("route", route);
   let { contact } = route.params;
-  console.log("contact.emails", contact.emails);
-  console.log("contact.image", contact.image);
-
   return (
     <View className="py-5 flex items-center px-4 h-full">
       <Text className="text-xl font-bold text-blue-500 text-center">
