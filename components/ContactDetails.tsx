@@ -47,6 +47,15 @@ export default function ContactDetails({
               />
             ))
           : null}
+        {contact.emails?.length
+          ? contact.emails.map((email, index) => (
+              <DataField
+                fieldName={`Email ${index + 1}`}
+                data={email.email}
+                key={email.id}
+              />
+            ))
+          : null}
         {contact.company && (
           <DataField fieldName="Company" data={contact.company} />
         )}
