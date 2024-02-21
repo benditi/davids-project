@@ -29,7 +29,9 @@ export default function ContactDetails({
           title="Back"
         ></Button>
       </View>
-      <Text className="text-xl text-blue-500 text-center">{contact.name}</Text>
+      <Text className="text-xl font-bold text-blue-500 text-center">
+        {contact.name}
+      </Text>
       <View className="w-full px-2 pt-5 text-lg">
         {contact.phoneNumbers?.length
           ? contact.phoneNumbers.map((phone, index) => (
