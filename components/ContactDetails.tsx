@@ -65,7 +65,16 @@ export default function ContactDetails({
           }}
           className="bg-blue-500 h-12 rounded-lg flex flex-row items-center justify-center"
         >
-          <Text className="text-white texl-lg font-semibold">Back</Text>
+          <>
+            <Image
+              source={require("../assets/left-arrow.png")}
+              style={{
+                width: 30,
+                height: 30,
+              }}
+            />
+            <Text className="text-white texl-lg font-semibold px-3">Back</Text>
+          </>
         </TouchableHighlight>
       </View>
     </View>
