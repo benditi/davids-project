@@ -1,6 +1,7 @@
 import { View, Text, Button, Image, TouchableHighlight } from "react-native";
 import * as Contacts from "expo-contacts";
 import { formatAddress } from "../lib/utils";
+import { DataField } from "./DataField";
 
 type ContactDetailsProps = {
   navigation: any;
@@ -34,18 +35,28 @@ export default function ContactDetails({
       <View className="w-full pt-5 ">
         {contact.phoneNumbers?.length
           ? contact.phoneNumbers.map((phone, index) => (
-              <Text key={phone.id} className="text-lg">
-                Phone {index + 1}: {phone.number}
-              </Text>
+              <DataField
+                fieldName={`Phone ${index + 1}`}
+                data={phone.number}
+                key={phone.id}
+              />
             ))
           : null}
         {contact.addresses?.length
           ? contact.addresses.map((address, index) => (
-              <Text key={address.id} className="text-lg">
-                Address {index + 1}: {formatAddress(address)}
-              </Text>
+              <DataField
+                fieldName={`Address ${index + 1}`}
+                data={formatAddress(address)}
+                key={address.id}
+              />
             ))
           : null}
+        {contact.company && (
+          <DataField fieldName="Company" data={contact.company} />
+        )}
+        {contact.jobTitle && (
+          <DataField fieldName="Job Title" data={contact.jobTitle} />
+        )}
       </View>
       <View className="w-40 absolute bottom-10">
         <TouchableHighlight

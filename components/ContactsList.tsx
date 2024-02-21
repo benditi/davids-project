@@ -1,23 +1,12 @@
 import {
   View,
-  SectionList,
   Text,
-  Image,
-  ScrollView,
   TextInput,
-  Button,
   FlatList,
   TouchableHighlight,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import * as Contacts from "expo-contacts";
-
-const logo = {
-  uri: "https://reactnative.dev/img/tiny_logo.png",
-  width: 64,
-  height: 64,
-};
 
 export default function ContactsList({ navigation }) {
   let [contacts, setContacts] = useState<Contacts.Contact[]>([]);
@@ -27,22 +16,11 @@ export default function ContactsList({ navigation }) {
       const { status } = await Contacts.requestPermissionsAsync();
       if (status === "granted") {
         const { data } = await Contacts.getContactsAsync({
-          // fields: [Contacts.Fields.Emails],
           sort: Contacts.SortTypes.FirstName,
           name: filter,
         });
 
         if (data.length > 0) {
-          console.log("data.length", data.length);
-          // let sortedContacts = data.sort(function (a, b) {
-          //   if (a.name < b.name) {
-          //     return -1;
-          //   }
-          //   if (a.name > b.name) {
-          //     return 1;
-          //   }
-          //   return 0;
-          // });
           setContacts(data);
         }
       }
@@ -70,7 +48,9 @@ export default function ContactsList({ navigation }) {
             }
           >
             <View className="flex items-center justify-between flex-row bg-gray-300 rounded-md my-1">
-              <Text style={{ padding: 10, height: 44 }}>{item.name}</Text>
+              <Text style={{ padding: 10, height: 44 }}>
+                {item.name.length > 24 ? item.name.substring(0, 24) : item.name}
+              </Text>
               <Text style={{ padding: 10, height: 44 }}>
                 {item.phoneNumbers?.length ? item.phoneNumbers[0].number : ""}
               </Text>
