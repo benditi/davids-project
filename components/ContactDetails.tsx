@@ -1,4 +1,10 @@
-import { View, Text, Image, TouchableHighlight } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableHighlight,
+  ScrollView,
+} from "react-native";
 import * as Contacts from "expo-contacts";
 import { formatAddress } from "../lib/utils";
 import { DataField } from "./DataField";
@@ -19,16 +25,16 @@ export default function ContactDetails({
   let { contact } = route.params;
   return (
     <View className="py-5 flex items-center px-4 h-full">
-      <Text className="text-xl font-bold text-blue-500 text-center">
+      <Text className="text-xl font-bold text-blue-500 text-center pb-5">
         {contact.name}
       </Text>
       {contact.imageAvailable && (
         <Image
           source={{ uri: contact.image.uri, height: 100, width: 100 }}
-          className="rounded-full mt-5"
+          className="rounded-full mb-5"
         />
       )}
-      <View className="w-full pt-5 ">
+      <ScrollView className="w-full [height:400px] flex-grow-0">
         {contact.phoneNumbers?.length
           ? contact.phoneNumbers.map((phone, index) => (
               <DataField
@@ -62,7 +68,7 @@ export default function ContactDetails({
         {contact.jobTitle && (
           <DataField fieldName="Job Title" data={contact.jobTitle} />
         )}
-      </View>
+      </ScrollView>
       <View className="w-40 absolute bottom-10">
         <TouchableHighlight
           onPress={() => {
