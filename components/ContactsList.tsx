@@ -2,14 +2,16 @@ import {
   View,
   Text,
   TextInput,
-  FlatList,
+  SectionList,
   TouchableHighlight,
 } from "react-native";
 import { useEffect, useState } from "react";
 import * as Contacts from "expo-contacts";
 
+export type GroupedContacts = { title: string; data: Contacts.Contact[] }[];
+
 export default function ContactsList({ navigation }) {
-  let [contacts, setContacts] = useState<Contacts.Contact[]>([]);
+  let [contacts, setContacts] = useState<GroupedContacts>([]);
   let [filter, setFilter] = useState("");
 
   useEffect(() => {
@@ -20,8 +22,22 @@ export default function ContactsList({ navigation }) {
           sort: Contacts.SortTypes.FirstName,
           name: filter,
         });
+        let groupedData: Record<string, Contacts.Contact[]> = data.reduce(
+          (acc, item) => {
+            let firstString = item.name.trim()[0];
+            acc[firstString] = acc[firstString]
+              ? [...acc[firstString], item]
+              : [item];
+            return acc;
+          },
+          {}
+        );
+        let sectionedData: { title: string; data: Contacts.Contact[] }[] = [];
+        for (let key in groupedData) {
+          sectionedData.push({ title: key, data: groupedData[key] });
+        }
         if (data.length > 0) {
-          setContacts(data);
+          setContacts(sectionedData);
         }
       }
     })();
@@ -38,9 +54,13 @@ export default function ContactsList({ navigation }) {
         onChangeText={setFilter}
         defaultValue={filter}
       />
-      <FlatList
+
+      <SectionList
         className="w-4/5 flex self-center"
-        data={contacts}
+        sections={contacts}
+        renderSectionHeader={({ section }) => (
+          <Text className="font-bold text-left py-2 px-2">{section.title}</Text>
+        )}
         renderItem={({ item }) => (
           <TouchableHighlight
             onPress={() =>
@@ -49,7 +69,9 @@ export default function ContactsList({ navigation }) {
           >
             <View className="flex items-center justify-between flex-row bg-gray-300 rounded-md my-1">
               <Text style={{ padding: 10, height: 44 }}>
-                {item.name.length > 24 ? item.name.substring(0, 24) : item.name}
+                {item.name?.length > 24
+                  ? item.name.substring(0, 24)
+                  : item.name}
               </Text>
               <Text style={{ padding: 10, height: 44 }}>
                 {item.phoneNumbers?.length ? item.phoneNumbers[0].number : ""}
