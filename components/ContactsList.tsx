@@ -4,16 +4,18 @@ import {
   TextInput,
   SectionList,
   TouchableHighlight,
+  Image,
 } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as Contacts from "expo-contacts";
+import { twMerge } from "tailwind-merge";
 
 export type GroupedContacts = { title: string; data: Contacts.Contact[] }[];
 
 export default function ContactsList({ navigation }) {
   let [contacts, setContacts] = useState<GroupedContacts>([]);
   let [filter, setFilter] = useState("");
-
+  let [isButtonShown, setIsButtonShown] = useState(false);
   useEffect(() => {
     (async () => {
       const { status } = await Contacts.requestPermissionsAsync();
@@ -42,7 +44,7 @@ export default function ContactsList({ navigation }) {
       }
     })();
   }, [filter]);
-
+  let scrollRef = useRef(null);
   return (
     <View className="flex items-center h-full pt-5">
       <Text className="text-xl text-blue-500 text-center py-5 font-bold">
@@ -56,6 +58,16 @@ export default function ContactsList({ navigation }) {
       />
 
       <SectionList
+        ref={scrollRef}
+        onScrollBeginDrag={(event) => {
+          const contentOffset = event.nativeEvent.contentOffset.y;
+          if (contentOffset > 0) {
+            setIsButtonShown(true);
+          }
+        }}
+        onScrollEndDrag={() => {
+          setTimeout(() => setIsButtonShown(false), 2000);
+        }}
         className="w-4/5 flex self-center"
         sections={contacts}
         renderSectionHeader={({ section }) => (
@@ -80,6 +92,19 @@ export default function ContactsList({ navigation }) {
           </TouchableHighlight>
         )}
       />
+      <TouchableHighlight
+        className={twMerge(
+          "h-12 w-12 flex justify-center items-center shadow-xl absolute bottom-5 rounded-full bg-white",
+          !isButtonShown && "hidden"
+        )}
+        onPress={() =>
+          scrollRef.current.scrollToLocation({ sectionIndex: 0, itemIndex: 0 })
+        }
+      >
+        <Text>
+          <Image source={require("../assets/icon-top-arrow-16.png")} />
+        </Text>
+      </TouchableHighlight>
     </View>
   );
 }
