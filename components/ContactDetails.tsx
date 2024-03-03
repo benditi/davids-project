@@ -10,7 +10,7 @@ import * as Contacts from "expo-contacts";
 import { formatAddress } from "../lib/utils";
 import { DataField } from "./DataField";
 import { Camera, CameraType } from "expo-camera";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type ContactDetailsProps = {
   navigation: any;
@@ -26,10 +26,11 @@ export default function ContactDetails({
   route,
 }: ContactDetailsProps) {
   let { contact } = route.params;
+  const [type, setType] = useState(CameraType.back);
+
   useEffect(() => {
     (async () => {
       let permissions = await Camera.requestCameraPermissionsAsync();
-      console.log("permissions", permissions);
     })();
   }, []);
   let cameraRef: React.MutableRefObject<Camera> = useRef(null);
@@ -47,18 +48,28 @@ export default function ContactDetails({
           className="rounded-full mb-5"
         />
       )}
-      <Camera
-        style={{ height: 120, width: 120 }}
-        type={CameraType.back}
-        onCameraReady={() => {}}
-        ref={cameraRef}
-      ></Camera>
+      <View>
+        <Camera
+          className="h-40 w-40 rounded-full"
+          type={type}
+          onCameraReady={() => {}}
+          ref={cameraRef}
+        ></Camera>
+      </View>
       <Button
         title="Take Picture"
         onPress={() => {
           cameraRef.current.takePictureAsync({
             onPictureSaved,
           });
+        }}
+      />
+      <Button
+        title={"Switch to " + (type === CameraType.back ? "front" : "back")}
+        onPress={() => {
+          setType((prevState) =>
+            prevState === CameraType.back ? CameraType.front : CameraType.back
+          );
         }}
       />
       <ScrollView className="w-full [height:400px] flex-grow-0">
