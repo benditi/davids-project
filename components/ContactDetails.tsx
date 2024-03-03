@@ -4,10 +4,13 @@ import {
   Image,
   TouchableHighlight,
   ScrollView,
+  Button,
 } from "react-native";
 import * as Contacts from "expo-contacts";
 import { formatAddress } from "../lib/utils";
 import { DataField } from "./DataField";
+import { Camera, CameraType } from "expo-camera";
+import { useEffect, useRef } from "react";
 
 type ContactDetailsProps = {
   navigation: any;
@@ -23,6 +26,16 @@ export default function ContactDetails({
   route,
 }: ContactDetailsProps) {
   let { contact } = route.params;
+  useEffect(() => {
+    (async () => {
+      let permissions = await Camera.requestCameraPermissionsAsync();
+      console.log("permissions", permissions);
+    })();
+  }, []);
+  let cameraRef: React.MutableRefObject<Camera> = useRef(null);
+  let onPictureSaved = (photo) => {
+    console.log(photo);
+  };
   return (
     <View className="py-5 flex items-center px-4 h-full">
       <Text className="text-xl font-bold text-blue-500 text-center pb-5">
@@ -34,6 +47,20 @@ export default function ContactDetails({
           className="rounded-full mb-5"
         />
       )}
+      <Camera
+        style={{ height: 120, width: 120 }}
+        type={CameraType.back}
+        onCameraReady={() => {}}
+        ref={cameraRef}
+      ></Camera>
+      <Button
+        title="Take Picture"
+        onPress={() => {
+          cameraRef.current.takePictureAsync({
+            onPictureSaved,
+          });
+        }}
+      />
       <ScrollView className="w-full [height:400px] flex-grow-0">
         {contact.phoneNumbers?.length
           ? contact.phoneNumbers.map((phone, index) => (
