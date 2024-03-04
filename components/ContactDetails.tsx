@@ -7,9 +7,10 @@ import {
   Button,
 } from "react-native";
 import * as Contacts from "expo-contacts";
+import * as NativeContacts from "react-native-contacts";
 import { formatAddress } from "../lib/utils";
 import { DataField } from "./DataField";
-import { Camera, CameraType } from "expo-camera";
+import { Camera, CameraCapturedPicture, CameraType } from "expo-camera";
 import { useEffect, useRef, useState } from "react";
 
 type ContactDetailsProps = {
@@ -34,8 +35,36 @@ export default function ContactDetails({
     })();
   }, []);
   let cameraRef: React.MutableRefObject<Camera> = useRef(null);
-  let onPictureSaved = (photo) => {
-    console.log(photo);
+  let onPictureSaved = async (picture: CameraCapturedPicture) => {
+    console.log(picture);
+    try {
+      let permissions = await Contacts.requestPermissionsAsync();
+      if (!permissions.granted) {
+        console.log("permissions denied", permissions);
+
+        return;
+      }
+
+      await updateContactPicture(picture);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  let updateContactPicture = async (picture: CameraCapturedPicture) => {
+    contact;
+    const updatedContact: Partial<NativeContacts.Contact> & {
+      recordID: string;
+    } = {
+      recordID: contact.id,
+      // [Contacts.Fields.Image]: picture,
+      // [Contacts.Fields.ImageAvailable]: true,
+    };
+    // because of android
+    console.log("updatedContact", updatedContact);
+    await NativeContacts.updateContact(updatedContact);
+    // await Contacts.presentFormAsync(contact.id, contact, {
+    //   allowsEditing: true,
+    // });
   };
   return (
     <View className="py-5 flex items-center px-4 h-full">
