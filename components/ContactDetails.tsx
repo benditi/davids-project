@@ -56,6 +56,8 @@ export default function ContactDetails({
       recordID: string;
     } = {
       recordID: contact.id,
+      givenName: "Yahel",
+      familyName: "Idan",
       // [Contacts.Fields.Image]: picture,
       // [Contacts.Fields.ImageAvailable]: true,
     };
