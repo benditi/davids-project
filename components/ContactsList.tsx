@@ -47,6 +47,18 @@ export default function ContactsList({ navigation }) {
   let scrollRef = useRef(null);
   return (
     <View className="flex items-center h-full pt-5">
+      <TouchableHighlight
+        onPress={() => {
+          navigation.navigate("ChatRoom");
+        }}
+        className="bg-blue-500 h-12 rounded-lg flex flex-row items-center justify-center"
+      >
+        <>
+          <Text className="text-white texl-lg font-semibold px-3">
+            Chat Room
+          </Text>
+        </>
+      </TouchableHighlight>
       <Text className="text-xl text-blue-500 text-center py-5 font-bold">
         Your Contacts:
       </Text>
